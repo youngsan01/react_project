@@ -4,16 +4,16 @@
 
 ```json
 {
-    "singleQuote": true,
-    "semi": true,
-    "useTabs": false,
-    "tabWidth": 2,
-    "trailingComma": "all"
+  "singleQuote": true,
+  "semi": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "trailingComma": "all"
 }
 ```
 
-
 ## 의존성 : 필요 라이브러리
+
 > 필요 라이브러리
 
     - react -router-dom : 라우터
@@ -31,19 +31,21 @@ yarn add react-helmet-async
 ```
 
 ## react-helmet-async 설정
--   src/index.js
+
+- src/index.js
 
 ```jsx
 import { HelmetProvider } from 'react-helmet-async';
-
 ```
+
 root.render(
-  <React.StrictMode>
-    <HelmetProvider>
-    <App />
-    </HelmetProvider>
-  </React.StrictMode>
+<React.StrictMode>
+<HelmetProvider>
+<App />
+</HelmetProvider>
+</React.StrictMode>
 );
+
 ```
 
 ```
@@ -51,16 +53,17 @@ root.render(
 import { Helmet } from "react-helmet-async";
 
 const App = () => {
-  return (
-    <>
-      <Helmet>
-        <title>사이트 제목 변경 테스트!</title>
-      </Helmet>
-    </>
-  );
+return (
+<>
+<Helmet>
+<title>사이트 제목 변경 테스트!</title>
+</Helmet>
+</>
+);
 };
 
 export default App;
+
 ```
 
 ## 메세지, 다국어 처리
@@ -69,8 +72,10 @@ export default App;
 - 의존성 설치
 
 ```
+
 yarn add i18next react-i18next
-```
+
+````
 
 - 언어파일 생성
     -sre/langs/ko, src/langs/en 폴더 생성
@@ -85,3 +90,41 @@ import errors from './errors';
 const ko = { ...commons, ...validations, ...errors };
 
 export default ko;
+````
+
+- 설정 파일 구성 : src/i18n.js
+
+```
+import i18n from 'i18next';
+import { Translation, initReactI18next } from 'react-i18next';
+import ko from './langs/ko';
+import en from './langs/en';
+
+const resources = {
+    en: {
+        Translation: en,
+    },
+    ko: {
+        Translation: ko,
+    },
+};
+
+i18n.use(initReactI18next).init({
+    resources,
+    lng: 'ko',
+});
+```
+
+- 설정 반영 : src/index.js
+
+```javascript
+...
+
+import './i18n';
+
+...
+```
+
+- 적용하기 : useTranslation 훅 / react-i18next
+  - t : 메세지 조회 함수
+  - i18n : 편의 기능 객체, changeLanguage(..) : 언어 변경
