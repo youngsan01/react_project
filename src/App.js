@@ -9,14 +9,14 @@ const App = () => {
       <Helmet>
         <title>사이트 제목 변경 테스트!</title>
       </Helmet>
-      <dic>{t('아이디')}</dic>
+      <div>{t('아이디')}</div>
       <div>{t('약관에_동의')}</div>
       <div>{t('없는_문구')}</div>
-      <button type="bytton" onClick={() => i18n.changeLanguage('ko')}>
+      <button type="button" onClick={() => i18n.changeLanguage('ko')}>
         한국어
       </button>
-      <button type="bytton" onClick={() => i18n.changeLanguage('en')}>
-        Englisg
+      <button type="button" onClick={() => i18n.changeLanguage('en')}>
+        English
       </button>
     </>
   );
