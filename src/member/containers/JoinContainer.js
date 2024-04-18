@@ -48,7 +48,10 @@ const JoinContainer = () => {
 
       for (const [field, msg] of Object.entries(requiredFields)) {
         // !form[field] - null, undefined, '' 체크, !form[field].trim() - ' '
-        if (!form[field] || !form[field].trim()) {
+        if (
+          !form[field] ||
+          (typeof form[field] === "string" && !form[field].trim())
+        ) {
           _errors[field] = _errors[field] || [];
           _errors[field].push(msg);
         }
@@ -66,7 +69,7 @@ const JoinContainer = () => {
         _errors.confirmPassword.push(t("비밀번호가_정확하지_않습니다."));
         hasErrors = true;
       }
-
+      console.log(form);
       setErrors(_errors);
 
       if (hasErrors) {
@@ -79,7 +82,7 @@ const JoinContainer = () => {
       /* 가입완료 후 로그인 페이지 이동 */
       navigate("/member/login", { replace: true }); // replace: true -> 방문 기록 X
     },
-    [t, form]
+    [t, form, navigate]
   );
 
   const onChange = useCallback((e) => {
