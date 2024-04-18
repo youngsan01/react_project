@@ -1,26 +1,28 @@
-import React from "react";
-import styled from "styled-components";
-import { Link, NavLink } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import classNames from "classnames";
+import React, { useContext } from 'react';
+import styled from 'styled-components';
+import { Link, NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
 
-import { FaSearch } from "react-icons/fa";
+import { FaSearch } from 'react-icons/fa';
 
-import fontSize from "../styles/fontSize";
-import { color } from "../styles/color";
-import logo from "../images/logo.png";
-
-import MainMenu from "./MainMenu";
+import fontSize from '../styles/fontSize';
+import { color } from '../styles/color';
+import logo from '../images/logo.png';
+import MainMenu from './MainMenu';
+import UserInfoContext from '../member/modules/UserInfoContext';
 
 const { primary, dark, light } = color;
 
-const HeadeBox = styled.header`
+const HeaderBox = styled.header`
   .site-top {
     background: #f8f8f8;
     border-bottom: 1px solid #d5d5d5;
     height: 35px;
+
     div {
       text-align: right;
+
       a {
         display: inline-block;
         line-height: 34px;
@@ -33,6 +35,7 @@ const HeadeBox = styled.header`
       }
     }
   }
+
   .logo-search {
     div {
       display: flex;
@@ -50,18 +53,17 @@ const HeadeBox = styled.header`
           background: ${dark};
           border: 0;
           cursor: pointer;
-          
+
           svg {
             color: ${light};
             font-size: 1.75rem;
           }
         }
 
-          input[type="text"] {
-            flex-grow: 1;
-            border: 5px solid ${dark};
-            padding: 0 10px;
-          }
+        input[type='text'] {
+          flex-grow: 1;
+          border: 5px solid ${dark};
+          padding: 0 10px;
         }
       }
     }
@@ -70,28 +72,56 @@ const HeadeBox = styled.header`
 
 const Header = () => {
   const { t } = useTranslation();
+  const {
+    states: { isLogin, userInfo },
+  } = useContext(UserInfoContext);
+
   return (
-    <HeadeBox>
+    <HeaderBox>
       <section className="site-top">
         <div className="layout-width">
-          <NavLink
-            to="/member/join"
-            className={({ isActive }) => classNames({ on: isActive })}
-          >
-            {t("회원가입")}
-          </NavLink>
-          <NavLink
-            to="/member/login"
-            className={({ isActive }) => classNames({ on: isActive })}
-          >
-            {t("로그인")}
-          </NavLink>
+          {isLogin ? (
+            <>
+              {/* 로그인 상태 */}
+              <span>
+                {userInfo.name}({userInfo.email}){t('님_로그인')}
+              </span>
+              <NavLink
+                to="/mypage"
+                className={({ isActive }) => classNames({ on: isActive })}
+              >
+                {t('마이페이지')}
+              </NavLink>
+              <NavLink
+                to="/member/logout"
+                className={({ isActive }) => classNames({ on: isActive })}
+              >
+                {t('로그아웃')}
+              </NavLink>
+            </>
+          ) : (
+            <>
+              {/* 미로그인 상태 */}
+              <NavLink
+                to="/member/join"
+                className={({ isActive }) => classNames({ on: isActive })}
+              >
+                {t('회원가입')}
+              </NavLink>
+              <NavLink
+                to="/member/login"
+                className={({ isActive }) => classNames({ on: isActive })}
+              >
+                {t('로그인')}
+              </NavLink>
+            </>
+          )}
         </div>
       </section>
       <section className="logo-search">
         <div className="layout-width">
           <Link to="/">
-            <img src={logo} alt={t("로고")} />
+            <img src={logo} alt={t('로고')} />
           </Link>
 
           <form autoComplete="off">
@@ -103,7 +133,7 @@ const Header = () => {
         </div>
       </section>
       <MainMenu />
-    </HeadeBox>
+    </HeaderBox>
   );
 };
 
